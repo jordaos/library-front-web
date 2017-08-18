@@ -1,0 +1,29 @@
+<div class="container">
+    <h2>Salvar autor</h2>
+    <div [ngClass]="classesCss" role="alert" *ngIf="message">
+        <span [ngSwitch]="message.type">
+            <strong *ngSwitchCase="'danger'">Error: </strong>
+            <strong *ngSwitchCase="'success'">Success: </strong>
+            <strong *ngSwitchCase="'warning'">Alert: </strong>
+            <strong *ngSwitchDefault>Info: </strong>
+        </span> {{ message.value }}
+    </div>
+    <form (ngSubmit)="onSubmit()" #authorForm="ngForm" novalidate>
+        <div [ngClass]="getFormGroupClass(firstName.valid, firstName.pristine)">
+            <label for="firstName" class="col-form-label">Primeiro nome</label>
+            <input type="text" placeholder="Ex.: Jordão" name="firstName" [ngClass]="getFormControlClass(firstName.valid, firstName.pristine)"
+                [(ngModel)]="author.firstName" required #firstName="ngModel" />
+            <div class="form-control-feedback" [hidden]="firstName.valid || firstName.pristine">O campo nome é obrigatório</div>
+        </div>
+
+        <div [ngClass]="getFormGroupClass(lastName.valid, lastName.pristine)">
+            <label for="lastName" class="col-form-label">Sobre nome</label>
+            <input type="text" placeholder="Ex.: Macedo" name="lastName" [ngClass]="getFormControlClass(lastName.valid, lastName.pristine)"
+                [(ngModel)]="author.lastName" required #lastName="ngModel" />
+            <div class="form-control-feedback" [hidden]="lastName.valid || lastName.pristine">O campo nome é obrigatório</div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="!authorForm.form.valid">Salvar</button>
+        <a class="btn btn-secondary" (click)="goBack()">Voltar</a>
+    </form>
+</div>

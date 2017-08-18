@@ -3,7 +3,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h2>Todos os autores</h2>
 
-            <a routerLink="/authors/save" class="btn btn-success my-1">Novo</a>
+            <a routerLink="/author/save" class="btn btn-success my-1">Novo</a>
 
             <div [ngClass]="classesCss" role="alert" *ngIf="message">
                 <span [ngSwitch]="message.type">
@@ -33,7 +33,7 @@
                         <td class="col-sm-1">{{ author.id }}</td>
                         <td class="col-sm-9">{{ author.firstName + ' ' + author.lastName }}</td>
                         <td class="col-sm-2">
-                            <button class="btn btn-info btn-sm" [routerLink]="['/authors/save', author.id]">Editar</button> 
+                            <button class="btn btn-info btn-sm" [routerLink]="['/author/save', author.id]">Editar</button> 
                             <button class="btn btn-danger btn-sm" (click)="onDelete(author)">Apagar</button>
                         </td>
                     </tr>

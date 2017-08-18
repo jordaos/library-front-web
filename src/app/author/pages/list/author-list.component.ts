@@ -6,7 +6,8 @@ import { AuthorService } from './../../author.service';
 @Component({
     moduleId: module.id,
     selector: 'author-lista',
-    templateUrl: './author-list.component.html'
+    templateUrl: './author-list.component.html',
+    styleUrls: ['./author-list.component.css']
 })
 export class AuthorListComponent implements OnInit {
     authors: Author[] = [];

@@ -7,7 +7,7 @@ import { MainComponent } from './main.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent, pathMatch: 'full' },
-  { path: '**',  component: PageNotFoundComponent }
+  { path: '404', component: PageNotFoundComponent }
 ];
 
 @NgModule({

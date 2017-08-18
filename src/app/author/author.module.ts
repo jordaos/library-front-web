@@ -2,21 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms"
 
-/*import { AuthorFormComponent } from './author-form/author-form.component';
-import { AuthorListComponent } from './author-list.component';*/
-import { AuthorRoutingModule } from './author-routing.module';
+import { AuthorFormComponent } from './pages/form/author-form.component';
+import { AuthorListComponent } from './pages/list/author-list.component';
 import { AuthorService } from './author.service';
 
+import { AuthorRoutingModule } from './author-routing.module';
+
 @NgModule({
-    imports: [ 
-        AuthorRoutingModule, 
+    imports: [
+        AuthorRoutingModule,
         CommonModule,
         FormsModule
     ],
-    exports: [ /*AuthorListComponent*/ ],
+    exports: [ AuthorListComponent ],
     declarations: [
-        /*AuthorListComponent,
-        AuthorFormComponent*/
+        AuthorListComponent,
+        AuthorFormComponent
     ],
     providers: [ AuthorService ],
 })
