@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { Author } from "./../../author.model";
 import { AuthorService } from './../../author.service';
 
+import { ConfirmModalComponent } from './../../../modals/confirm/confirm-modal.component';
+
 @Component({
-    moduleId: module.id,
     selector: 'author-lista',
     templateUrl: './author-list.component.html',
     styleUrls: ['./author-list.component.css']
@@ -16,8 +18,11 @@ export class AuthorListComponent implements OnInit {
     classesCss: {};
     itsLoading = true;
 
+    closeResult: string;//for modal
+
     constructor(
-         private authorService: AuthorService
+         private authorService: AuthorService,
+         private modalService: NgbModal
     ){}
 
     ngOnInit(): void{
@@ -36,20 +41,24 @@ export class AuthorListComponent implements OnInit {
     }
 
     //Sem confirmação
-    onDelete(author: Author): void{
-        this.authorService.delete(author)
-            .then(() => {
-                var index = this.authors.indexOf(author);
-                this.authors.splice(index, 1);
-                this.mostrarMensagem({
-                    type: 'success', 
-                    value: 'Contato deletado.'
-                });
-            }).catch((err: Error) => {
-                this.mostrarMensagem({
-                    type: 'danger', 
-                    value: 'Erro ao deletar contato.'
-                });
+    onDelete(author: Author, content: any): void{
+        this.modalService.open(content).result.then((result) => {
+                this.authorService.delete(author)
+                    .then(() => {
+                        var index = this.authors.indexOf(author);
+                        this.authors.splice(index, 1);
+                        this.mostrarMensagem({
+                            type: 'success', 
+                            value: 'Contato deletado.'
+                        });
+                    }).catch((err: Error) => {
+                        this.mostrarMensagem({
+                            type: 'danger', 
+                            value: 'Erro ao deletar contato.'
+                        });
+                    });
+            }, (reason) => {
+                
             });
     }
 

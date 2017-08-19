@@ -34,7 +34,7 @@
                         <td class="col-sm-9">{{ author.firstName + ' ' + author.lastName }}</td>
                         <td class="col-sm-2">
                             <button class="btn btn-info btn-sm" [routerLink]="['/author/save', author.id]">Editar</button> 
-                            <button class="btn btn-danger btn-sm" (click)="onDelete(author)">Apagar</button>
+                            <button class="btn btn-danger btn-sm" (click)="onDelete(author, content)">Apagar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -42,3 +42,19 @@
         </div>
     </div>
 </div>
+
+<ng-template #content let-d="dismiss" let-c="close">
+    <div class="modal-header">
+        <h4 class="modal-title">Modal title</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="c('Confirm')">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="d()">No</button>
+    </div>
+</ng-template>
