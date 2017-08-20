@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h2>Todos os autores</h2>
+            <h2>Todas as editoras</h2>
 
-            <a routerLink="/author/save" class="btn btn-success my-1">Novo</a>
+            <a routerLink="/pub/save" class="btn btn-success my-1">Novo</a>
 
             <div [ngClass]="classesCss" role="alert" *ngIf="message">
                 <span [ngSwitch]="message.type">
@@ -18,23 +18,25 @@
                 <thead>
                     <tr class="row">
                         <th class="col-sm-1">id</th>
-                        <th class="col-sm-9">Nome</th>
+                        <th class="col-sm-7">Titulo</th>
+                        <th class="col-sm-2">Tipo</th>
                         <th class="col-sm-2">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="authors.length == 0" class="row">
+                    <tr *ngIf="pubs.length == 0" class="row">
                         <td colspan="4" class="text-center col-sm-12">
                             <div class="loader" *ngIf="itsLoading"></div>
                             <span *ngIf="!itsLoading">Nenhum registro encontrado.</span>
                         </td>
                     </tr>
-                    <tr *ngFor="let author of authors" class="row align-bottom">
-                        <td class="col-sm-1">{{ author.id }}</td>
-                        <td class="col-sm-9">{{ author.firstName + ' ' + author.lastName }}</td>
+                    <tr *ngFor="let pub of pubs" class="row align-bottom">
+                        <td class="col-sm-1">{{ pub.id }}</td>
+                        <td class="col-sm-7">{{ pub.title }}</td>
+                        <td class="col-sm-2">{{ pub.type }}</td>
                         <td class="col-sm-2">
-                            <button class="btn btn-info btn-sm" [routerLink]="['/author/save', author.id]">Editar</button> 
-                            <button class="btn btn-danger btn-sm" (click)="onDelete(author, content)">Apagar</button>
+                            <button class="btn btn-info btn-sm" [routerLink]="['/pub/save', pub.id]">Editar</button> 
+                            <button class="btn btn-danger btn-sm" (click)="onDelete(pub, content)">Apagar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -45,7 +47,7 @@
 
 <ng-template #content let-d="dismiss" let-c="close">
     <div class="modal-header">
-        <h4 class="modal-title">Apagar {{ toBeDeleted.firstName + ' ' + toBeDeleted.lastName }}?</h4>
+        <h4 class="modal-title">Apagar "{{ toBeDeleted.title }}"?</h4>
         <button type="button" class="close" aria-label="Close" (click)="d()">
             <span aria-hidden="true">&times;</span>
         </button>

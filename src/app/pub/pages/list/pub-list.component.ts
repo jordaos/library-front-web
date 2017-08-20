@@ -1,64 +1,62 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { Author } from "./../../author.model";
-import { AuthorService } from './../../author.service';
+import { Pub } from "./../../pub.model";
+import { PubService } from './../../pub.service';
 
 @Component({
-    selector: 'author-lista',
-    templateUrl: './author-list.component.html',
-    styleUrls: ['./author-list.component.css']
+    selector: 'pub-list',
+    templateUrl: './pub-list.component.html',
+    styleUrls: ['./pub-list.component.css']
 })
-export class AuthorListComponent implements OnInit {
-    authors: Author[] = [];
+export class PubListComponent implements OnInit {
+    pubs: Pub[] = [];
     message: {};
     private currentTimeout: any;
     classesCss: {};
     itsLoading = true;
 
-    toBeDeleted: Author;
+    toBeDeleted: Pub;
 
     constructor(
-         private authorService: AuthorService,
+         private pubService: PubService,
          private modalService: NgbModal
     ){}
 
     ngOnInit(): void{
-        this.authorService.findAll()
-            .then((authors: Author[]) => {
-                this.authors = authors;
+        this.pubService.findAll()
+            .then((pubs: Pub[]) => {
+                this.pubs = pubs;
                 this.itsLoading = false;
             })
             .catch(err => {
                 this.mostrarMensagem({
                     type: 'danger', 
-                    value: 'Ocorreu um erro ao buscar a lista de autores.'
+                    value: 'Ocorreu um erro ao buscar a lista de publicações.'
                 });
                 this.itsLoading = false;
             });
     }
 
-    onDelete(author: Author, content: any): void{
-        this.toBeDeleted = author;
+    onDelete(pub: Pub, content: any): void{
+        console.log(pub);
+        this.toBeDeleted = pub;
         this.modalService.open(content).result.then((result) => {
-                this.authorService.delete(author)
+                this.pubService.delete(pub)
                     .then(() => {
-                        var index = this.authors.indexOf(author);
-                        this.authors.splice(index, 1);
+                        var index = this.pubs.indexOf(pub);
+                        this.pubs.splice(index, 1);
                         this.mostrarMensagem({
                             type: 'success', 
-                            value: 'Contato deletado.'
+                            value: 'Publicação deletada.'
                         });
                     }).catch((err: Error) => {
                         this.mostrarMensagem({
                             type: 'danger', 
-                            value: 'Erro ao deletar contato.'
+                            value: 'Erro ao deletar publicação.'
                         });
                     });
-            }, (reason) => {
-                
-            });
-        this.toBeDeleted = null;
+            }, (reason) => {});
     }
 
     private mostrarMensagem(message: {type: string, value: string}): void{

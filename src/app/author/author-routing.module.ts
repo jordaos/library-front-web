@@ -20,9 +20,7 @@ const authorRoutes: Routes = [
     {
         path: 'author/save/:id',
         component: AuthorFormComponent,
-    },
-
-    { path: '**', component: PageNotFoundComponent }
+    }
 ];
 
 @NgModule({

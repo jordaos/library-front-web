@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { AuthorService } from './../../author.service';
-import { Author } from './../../author.model';
+import { PublisherService } from './../../publisher.service';
+import { Publisher } from './../../publisher.model';
 
 @Component({
-    selector: 'author-form',
-    templateUrl: './author-form.component.html',
-    styleUrls: ['./author-form.component.css']
+    selector: 'publisher-form',
+    templateUrl: './publisher-form.component.html',
+    styleUrls: ['./publisher-form.component.css']
 })
 
-export class AuthorFormComponent implements OnInit {
+export class PublisherFormComponent implements OnInit {
 
-    author: Author;
+    publisher: Publisher;
     private isNew: boolean = true;
 
     message: {};
@@ -20,7 +20,7 @@ export class AuthorFormComponent implements OnInit {
     classesCss: {};
 
     constructor(
-        private authorService: AuthorService,
+        private publisherService: PublisherService,
         private route: ActivatedRoute,
         private location: Location
     ) {}
@@ -28,9 +28,9 @@ export class AuthorFormComponent implements OnInit {
     onSubmit(): void{
         let promise;
         if(this.isNew){
-            promise = this.authorService.create(this.author);
+            promise = this.publisherService.create(this.publisher);
         }else{
-            promise = this.authorService.update(this.author);
+            promise = this.publisherService.update(this.publisher);
         }
         promise.then(contato => this.goBack())
             .catch((err: Error) => {
@@ -56,15 +56,15 @@ export class AuthorFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.author = new Author(null, '', '');
+        this.publisher = new Publisher(null, '');
 
         this.route.params.forEach((params: Params) => {
             let id: number = +params['id'];// + para converter em number
             if(id){
                 this.isNew = false;
-                this.authorService.find(id)
-                    .then((author: Author) => {
-                        this.author = author;
+                this.publisherService.find(id)
+                    .then((publisher: Publisher) => {
+                        this.publisher = publisher;
                     })
             }
         });

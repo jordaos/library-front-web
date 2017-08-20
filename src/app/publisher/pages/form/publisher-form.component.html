@@ -1,0 +1,22 @@
+<div class="container">
+    <h2>Salvar editora</h2>
+    <div [ngClass]="classesCss" role="alert" *ngIf="message">
+        <span [ngSwitch]="message.type">
+            <strong *ngSwitchCase="'danger'">Error: </strong>
+            <strong *ngSwitchCase="'success'">Success: </strong>
+            <strong *ngSwitchCase="'warning'">Alert: </strong>
+            <strong *ngSwitchDefault>Info: </strong>
+        </span> {{ message.value }}
+    </div>
+    <form (ngSubmit)="onSubmit()" #publisherForm="ngForm" novalidate>
+        <div [ngClass]="getFormGroupClass(name.valid, name.pristine)">
+            <label for="name" class="col-form-label">Nome da editora</label>
+            <input type="text" placeholder="Ex.: Editora Moderna" name="name" [ngClass]="getFormControlClass(name.valid, name.pristine)"
+                [(ngModel)]="publisher.name" required #name="ngModel" />
+            <div class="form-control-feedback" [hidden]="name.valid || name.pristine">O campo nome é obrigatório</div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="!publisherForm.form.valid">Salvar</button>
+        <a class="btn btn-secondary" (click)="goBack()">Voltar</a>
+    </form>
+</div>

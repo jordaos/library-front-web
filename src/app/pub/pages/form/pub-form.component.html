@@ -1,0 +1,78 @@
+<div class="container">
+    <h2>Salvar publicação</h2>
+    <div [ngClass]="classesCss" role="alert" *ngIf="message">
+        <span [ngSwitch]="message.type">
+            <strong *ngSwitchCase="'danger'">Error: </strong>
+            <strong *ngSwitchCase="'success'">Success: </strong>
+            <strong *ngSwitchCase="'warning'">Alert: </strong>
+            <strong *ngSwitchDefault>Info: </strong>
+        </span> {{ message.value }}
+    </div>
+    <form (ngSubmit)="onSubmit()" #pubForm="ngForm" novalidate enctype="multipart/form-data">
+        <div [ngClass]="getFormGroupClass(title.valid, title.pristine)">
+            <label for="title" class="col-form-label">Título</label>
+            <input type="text" placeholder="Ex.: Harry Potter e a Câmara Secreta" name="title" [ngClass]="getFormControlClass(title.valid, title.pristine)"
+                [(ngModel)]="pub.title" required #title="ngModel" />
+            <div class="form-control-feedback" [hidden]="title.valid || title.pristine">O campo título é obrigatório</div>
+        </div>
+
+        <div [ngClass]="getFormGroupClass((type.value != 'null'), type.pristine)">
+            <label for="type" class="col-form-label">Tipo</label>
+            <select name="type" [ngClass]="getFormControlClass((type.value != 'null'), type.pristine)"
+                [(ngModel)]="pub.type" required #type="ngModel">
+                <option [value]="null">Selecione</option>
+                <option *ngFor="let type of enumKeys()" [value]="type">
+                    {{ type }}
+                </option>
+            </select>
+            <div class="form-control-feedback" [hidden]="(type.value != 'null') || type.pristine">Selecione algum valor para o tipo de publicação</div>
+        </div>
+
+        <div [ngClass]="getFormGroupClass((author.value != 'null'), author.pristine)">
+            <label for="author" class="col-form-label">Autor</label>
+            <div class="loader-fast" *ngIf="loadingAuthors"></div>
+            <select name="author" [ngClass]="getFormControlClass((author.value != 'null'), author.pristine)"
+                [(ngModel)]="pub.author.id" required #author="ngModel">
+                <option [value]="null">Selecione</option>
+                <option *ngFor="let author of authors" [value]="author.id">
+                    {{ author.firstName + ' ' + author.lastName }}
+                </option>
+            </select>
+            <div class="form-control-feedback" [hidden]="(author.value != 'null') || author.pristine">Selecione algum autor</div>
+        </div>
+
+        <div [ngClass]="getFormGroupClass((publisher.value != 'null'), publisher.pristine)">
+            <label for="publisher" class="col-form-label">Publisher</label>
+            <div class="loader-fast" *ngIf="loadingPublishers"></div>
+            <select name="publisher" [ngClass]="getFormControlClass((publisher.value != 'null'), publisher.pristine)"
+                [(ngModel)]="pub.publisher.id" required #publisher="ngModel">
+                <option [value]="null">Selecione</option>
+                <option *ngFor="let publisher of publishers" [value]="publisher.id">
+                    {{ publisher.name }}
+                </option>
+            </select>
+            <div class="form-control-feedback" [hidden]="(publisher.value != 'null') || publisher.pristine">Selecione alguma editora</div>
+        </div>
+
+        <div [ngClass]="getFormGroupClass(description.valid, description.pristine)">
+            <label for="description" class="col-form-label">Descrição</label>
+            <textarea name="description" 
+                [ngClass]="getFormControlClass(description.valid, description.pristine)"
+                [(ngModel)]="pub.description" required #description="ngModel" 
+                rows="4" maxlength="255"
+                placeholder="Após as sofríveis férias na casa dos tios, Harry Potter se prepara para voltar a Hogwarts e começar seu segundo ano na..."
+            >{{ pub.description }}</textarea>
+            <div class="form-control-feedback" [hidden]="description.valid || description.pristine">O campo descrição é obrigatório</div>
+        </div>
+
+        <!--<div [ngClass]="getFormGroupClass(image.valid, image.pristine)">
+            <label for="image" class="col-form-label">Imagem</label>
+            <input type="file" name="image" [ngClass]="getFormControlClass(image.valid, image.pristine)"
+                [(ngModel)]="pub.image" (change)="fileUpload($event)" #image="ngModel" />
+            <div class="form-control-feedback" [hidden]="image.valid || image.pristine">O campo título é obrigatório</div>
+        </div>-->
+
+        <button type="submit" class="btn btn-success" [disabled]="!pubForm.form.valid || type.value == 'null' || author.value == 'null' || publisher.value == 'null'">Salvar</button>
+        <a class="btn btn-secondary" (click)="goBack()">Voltar</a>
+    </form>
+</div>

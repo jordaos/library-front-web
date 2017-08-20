@@ -1,64 +1,62 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { Author } from "./../../author.model";
-import { AuthorService } from './../../author.service';
+import { Publisher } from "./../../publisher.model";
+import { PublisherService } from './../../publisher.service';
 
 @Component({
-    selector: 'author-lista',
-    templateUrl: './author-list.component.html',
-    styleUrls: ['./author-list.component.css']
+    selector: 'publisher-list',
+    templateUrl: './publisher-list.component.html',
+    styleUrls: ['./publisher-list.component.css']
 })
-export class AuthorListComponent implements OnInit {
-    authors: Author[] = [];
+export class PublisherListComponent implements OnInit {
+    publishers: Publisher[] = [];
     message: {};
     private currentTimeout: any;
     classesCss: {};
     itsLoading = true;
 
-    toBeDeleted: Author;
+    toBeDeleted: Publisher;
 
     constructor(
-         private authorService: AuthorService,
+         private publisherService: PublisherService,
          private modalService: NgbModal
     ){}
 
     ngOnInit(): void{
-        this.authorService.findAll()
-            .then((authors: Author[]) => {
-                this.authors = authors;
+        this.publisherService.findAll()
+            .then((publishers: Publisher[]) => {
+                this.publishers = publishers;
                 this.itsLoading = false;
             })
             .catch(err => {
                 this.mostrarMensagem({
                     type: 'danger', 
-                    value: 'Ocorreu um erro ao buscar a lista de autores.'
+                    value: 'Ocorreu um erro ao buscar a lista de editoras.'
                 });
                 this.itsLoading = false;
             });
     }
 
-    onDelete(author: Author, content: any): void{
-        this.toBeDeleted = author;
+    onDelete(publisher: Publisher, content: any): void{
+        console.log(publisher);
+        this.toBeDeleted = publisher;
         this.modalService.open(content).result.then((result) => {
-                this.authorService.delete(author)
+                this.publisherService.delete(publisher)
                     .then(() => {
-                        var index = this.authors.indexOf(author);
-                        this.authors.splice(index, 1);
+                        var index = this.publishers.indexOf(publisher);
+                        this.publishers.splice(index, 1);
                         this.mostrarMensagem({
                             type: 'success', 
-                            value: 'Contato deletado.'
+                            value: 'Editora deletada.'
                         });
                     }).catch((err: Error) => {
                         this.mostrarMensagem({
                             type: 'danger', 
-                            value: 'Erro ao deletar contato.'
+                            value: 'Erro ao deletar editora.'
                         });
                     });
-            }, (reason) => {
-                
-            });
-        this.toBeDeleted = null;
+            }, (reason) => {});
     }
 
     private mostrarMensagem(message: {type: string, value: string}): void{
