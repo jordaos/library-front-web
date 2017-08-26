@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
@@ -14,7 +14,9 @@ export class PubService implements ServiceInterface<Pub>{
     private pubUrl: string = 'https://secret-waters-63016.herokuapp.com/pubs';
     private headers: Headers = new Headers({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'enctype': 'multipart/form-data',
+        'Accept': 'application/json'
     });
 
     constructor(
@@ -86,6 +88,30 @@ export class PubService implements ServiceInterface<Pub>{
             .toPromise()
             .then(() => pub as Pub)
             .catch(this.handleError)
+    }
+
+    postWithFile (pub: Pub, files: File): any {
+        let formData: FormData = new FormData();
+        formData.append('image', files[0], files[0].name);
+
+        pub.image = (files[0], files[0].name);
+
+        console.log(pub);
+        
+        let headers = new Headers();
+        var returnReponse = new Promise((resolve, reject) => {
+            this.http.post(this.pubUrl, pub, {
+                headers: headers
+            }).subscribe(
+                res => {
+                    console.log("response: ", res.json());
+                },
+                error => {
+                    console.log("error: ", error);
+                }
+            );
+        });
+        return returnReponse;
     }
 
     private handleError(err: any): Promise<any>{

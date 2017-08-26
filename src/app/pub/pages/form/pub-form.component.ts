@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { RequestOptions } from '@angular/http'
 
 import { PubService } from './../../pub.service';
 import { AuthorService } from './../../../author/author.service';
@@ -32,7 +33,7 @@ export class PubFormComponent implements OnInit {
     loadingPublishers: boolean = true;
     loadingAuthors: boolean = true;
 
-    image: any;
+    image: File;
 
     constructor(
         private pubService: PubService,
@@ -44,6 +45,8 @@ export class PubFormComponent implements OnInit {
 
     onSubmit(): void{
         let promise;
+        console.log(this.image);
+        this.pub.image = this.image;
         if(this.isNew){
             promise = this.pubService.create(this.pub);
         }else{
@@ -56,6 +59,13 @@ export class PubFormComponent implements OnInit {
                     value: 'Erro ao salvar a publicação.'
                 });
             });
+        
+    }
+
+    onChangeFile(event){
+        this.pubService.postWithFile(this.pub, event.srcElement.files).then(result => {
+            console.log(result);
+        });
     }
 
     getFormGroupClass(isValid: boolean, isPristine: boolean): {} {

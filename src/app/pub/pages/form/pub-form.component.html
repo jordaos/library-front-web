@@ -65,12 +65,10 @@
             <div class="form-control-feedback" [hidden]="description.valid || description.pristine">O campo descrição é obrigatório</div>
         </div>
 
-        <!--<div [ngClass]="getFormGroupClass(image.valid, image.pristine)">
+        <div>
             <label for="image" class="col-form-label">Imagem</label>
-            <input type="file" name="image" [ngClass]="getFormControlClass(image.valid, image.pristine)"
-                [(ngModel)]="pub.image" (change)="fileUpload($event)" #image="ngModel" />
-            <div class="form-control-feedback" [hidden]="image.valid || image.pristine">O campo título é obrigatório</div>
-        </div>-->
+            <input type="file" name="image" (change)="onChangeFile($event)" />
+        </div>
 
         <button type="submit" class="btn btn-success" [disabled]="!pubForm.form.valid || type.value == 'null' || author.value == 'null' || publisher.value == 'null'">Salvar</button>
         <a class="btn btn-secondary" (click)="goBack()">Voltar</a>

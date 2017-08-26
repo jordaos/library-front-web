@@ -10,6 +10,6 @@ export class Pub {
         public type: PubType,
         public author: Author,
         public publisher: Publisher,
-        public image: any
+        public image: File
     ){}
 }
